@@ -2,11 +2,18 @@ local utils = require("jot.utils")
 
 local M = {}
 
+local ui = vim.api.nvim_list_uis()[1]
 M.config = {
   quit_key = "q",
-  notes_dir = vim.fn.stdpath("cache") .. "/jot",
+  notes_dir = vim.fn.stdpath("data") .. "/jot",
   win_opts = {
-    split = "right",
+    relative = "editor",
+    width = 36,
+    height = 100,
+    anchor = "NE",
+    row = 0,
+    col = ui.width - 36,
+    -- split = "right",
     focusable = false,
   },
 }
@@ -21,7 +28,7 @@ M.open = function()
   local buf = utils.view_file(note_path, M.config)
 
   if M.config.quit_key ~= nil then
-    vim.api.nvim_buf_set_keymap(buf, "n", M.config.quit_key, ":q<CR>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(buf, "n", M.config.quit_key, ":silent wq<CR>", { noremap = true, silent = true })
   end
 end
 
